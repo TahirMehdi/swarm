@@ -1,29 +1,16 @@
-import { addListener, activateDialogWindow } from "./helpers";
-import { createClearCanvas, createRedraw } from "./draw/draw-canvas";
-import { initListeners } from "./draw/initListeners";
+import { reducers } from "reducers";
+import { createStore } from "redux";
+import app from "./app";
 
-function mainCycle({ clearCanvas, reDraw }) {
-  clearCanvas();
-  reDraw("test");
-}
-
-function init({ ...props }) {
-  const { iDocument } = props;
+function init(iDocument, iWindow) {
   const canvas = iDocument.getElementById("main");
   if (canvas) {
     const context = canvas.getContext("2d");
     const container = iDocument.getElementsByClassName("container")[0];
-    const params = {
-      ...props,
-      reDraw: createRedraw(context),
-      clearCanvas: createClearCanvas(container, canvas)
-    };
-    initListeners(params);
-    mainCycle(params);
+    const store = createStore(reducers);
+    store.dispatch({})
+    app(api, store);
   }
 }
 
-/**
- * start program on window load
- * */
-window.onload = () => init({ iDocument: document, iWindow: window });
+window.onload = () => init( document, window });
